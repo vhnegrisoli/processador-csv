@@ -1,11 +1,11 @@
 package com.processadorcsv.modulos.personagem.repository;
 
-import com.processadorcsv.modulos.personagem.model.PersonagemHQ;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import com.processadorcsv.modulos.personagem.model.Personagem;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface PersonagemRepository extends ElasticsearchRepository<PersonagemHQ, String> {
+public interface PersonagemRepository extends JpaRepository<Personagem, Integer> {
 
-    List<PersonagemHQ> findAll();
+    List<Personagem> findByNome(String nome);
 }

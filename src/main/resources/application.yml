@@ -1,7 +1,10 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
+
+  batch:
+    initialize-schema: never
 
   data:
     elasticsearch:
@@ -20,7 +23,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
       format_sql: true
     show-sql: true
     properties:
