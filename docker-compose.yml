@@ -1,12 +1,12 @@
 version: '3'
 services:
-  es01:
+  elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
-    container_name: es01
+    container_name: elasticsearch
     environment:
-      - node.name=es01
+      - node.name=elasticsearch
       - cluster.name=docker-cluster
-      - cluster.initial_master_nodes=es01
+      - cluster.initial_master_nodes=elasticsearch
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -20,16 +20,51 @@ services:
     networks:
       - elastic
 
-  kib01:
+  kibana:
     image: docker.elastic.co/kibana/kibana:7.9.3
-    container_name: kib01
+    container_name: kibana
     ports:
       - 5601:5601
     environment:
-      ELASTICSEARCH_URL: http://es01:9200
-      ELASTICSEARCH_HOSTS: http://es01:9200
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
     networks:
       - elastic
+
+  processador-csv-db:
+    image: postgres:11
+    container_name: processador-csv-db
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=processador-csv
+    networks:
+      - elastic
+    ports:
+      - 5432:5432
+
+  processador-csv-api:
+    build: './'
+    container_name: processador-csv-api
+    ports:
+      - 8080:8080
+    networks:
+      - elastic
+    depends_on:
+      - processador-csv-db
+      - elasticsearch
+      - kibana
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - ELASTICSEARCH_CLUSTER_NODES=elasticsearch
+      - ELASTICSEARCH_CLUSTER_PORT=9200
+      - ELASTICSEARCH_CLUSTER_NAME=docker-cluster
+      - DATABASE_HOST=processador-csv-db
+      - DATABASE_NAME=processador-csv
+      - DATABASE_USER=admin
+      - DATABASE_PORT=5432
+      - DATABASE_PASSWORD=123456
 
 volumes:
   esdata:

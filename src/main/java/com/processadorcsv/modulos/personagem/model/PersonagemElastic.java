@@ -13,6 +13,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.stream.Stream;
 
@@ -51,10 +52,13 @@ public class PersonagemElastic {
     private Integer anoPrimeiraAparicao;
     @Field(name = "mesPrimeiraAparicao", type = FieldType.Integer)
     private Integer mesPrimeiraAparicao;
+    @Field(name = "dataCadastro", type = FieldType.Date, format = DateFormat.basic_date_time)
+    private LocalDateTime dataCadastro;
 
     public static PersonagemElastic converterDe(Personagem personagem) {
         var personagemElastic = new PersonagemElastic();
         BeanUtils.copyProperties(personagem, personagemElastic);
+        personagemElastic.setDataCadastro(LocalDateTime.now());
         return personagemElastic;
     }
 }

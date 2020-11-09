@@ -8,10 +8,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Stream;
 
+import static com.processadorcsv.modulos.personagem.utils.PersonagemConstantes.*;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Data
@@ -49,20 +51,23 @@ public class Personagem {
     private Integer anoPrimeiraAparicao;
     @Column(name = "mes_primeira_aparicao")
     private Integer mesPrimeiraAparicao;
+    @Column(name = "data_cadastro")
+    private LocalDateTime dataCadastro;
 
     public static Personagem gerarPadrao() {
         return Personagem
             .builder()
-            .nome("Padrão")
-            .alinhamento("Padrão")
-            .corOlho("Padrão")
-            .corCabelo("Padrão")
-            .sexo("Padrão")
-            .situacaoVida("Padrão")
-            .totalAparicoes(0L)
-            .dataPrimeiraAparicao("2020-01")
-            .anoPrimeiraAparicao(2020)
-            .mesPrimeiraAparicao(1)
+            .nome(PADRAO)
+            .alinhamento(PADRAO)
+            .corOlho(PADRAO)
+            .corCabelo(PADRAO)
+            .sexo(PADRAO)
+            .situacaoVida(PADRAO)
+            .totalAparicoes(ZERO)
+            .dataPrimeiraAparicao(DATA_PADRAO)
+            .anoPrimeiraAparicao(ANO_PADRAO)
+            .mesPrimeiraAparicao(MES_PADRAO)
+            .dataCadastro(LocalDateTime.now())
             .build();
     }
 
@@ -98,7 +103,7 @@ public class Personagem {
 
     private static String recuperarDataPrimeiraAparicao(Integer ano, EMesPrimeiraAparicao mes) {
         return !isEmpty(ano) && !isEmpty(mes)
-            ? YearMonth.of(ano, mes.getMes()).format(DateTimeFormatter.ofPattern("yyyy-MM"))
+            ? YearMonth.of(ano, mes.getMes()).format(DateTimeFormatter.ofPattern(DATA_FORMATO_MES_ANO))
             : null;
     }
 }
