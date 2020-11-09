@@ -108,6 +108,30 @@ A aplicação estará disponível em:
 http://localhost:8080
 ```
 
+## Fluxo de atividade
+
+Dentro do diretório `process`, logo na raiz do projeto, há um arquivo chamado `data.csv`, sendo um CSV sobre a descrição de personagens de quadrinhos da DC e Marvel Comics, contendo exatamente 23.272 linhas de dados, com algumas inválidas, por exemplo, quando o campo YEAR for vazio.
+
+Exemplo de CSV utilizado: 
+
+|page_id|name                          |urlslug                               |ID             |ALIGN          |EYE       |HAIR      |SEX              |GSM|ALIVE            |APPEARANCES|FIRST APPEARANCE|YEAR|
+|-------|------------------------------|--------------------------------------|---------------|---------------|----------|----------|-----------------|---|-----------------|-----------|----------------|----|
+|1422   |Batman (Bruce Wayne)          |\/wiki\/Batman_(Bruce_Wayne)          |Secret Identity|Good Characters|Blue Eyes |Black Hair|Male Characters  |   |Living Characters|3093       |1939, May       |1939|
+|23387  |Superman (Clark Kent)         |\/wiki\/Superman_(Clark_Kent)         |Secret Identity|Good Characters|Blue Eyes |Black Hair|Male Characters  |   |Living Characters|2496       |1986, October   |1986|
+|1458   |Green Lantern (Hal Jordan)    |\/wiki\/Green_Lantern_(Hal_Jordan)    |Secret Identity|Good Characters|Brown Eyes|Brown Hair|Male Characters  |   |Living Characters|1565       |1959, October   |1959|
+|1659   |James Gordon (New Earth)      |\/wiki\/James_Gordon_(New_Earth)      |Public Identity|Good Characters|Brown Eyes|White Hair|Male Characters  |   |Living Characters|1316       |1987, February  |1987|
+|1576   |Richard Grayson (New Earth)   |\/wiki\/Richard_Grayson_(New_Earth)   |Secret Identity|Good Characters|Blue Eyes |Black Hair|Male Characters  |   |Living Characters|1237       |1940, April     |1940|
+|1448   |Wonder Woman (Diana Prince)   |\/wiki\/Wonder_Woman_(Diana_Prince)   |Public Identity|Good Characters|Blue Eyes |Black Hair|Female Characters|   |Living Characters|1231       |1941, December  |1941|
+|1486   |Aquaman (Arthur Curry)        |\/wiki\/Aquaman_(Arthur_Curry)        |Public Identity|Good Characters|Blue Eyes |Blond Hair|Male Characters  |   |Living Characters|1121       |1941, November  |1941|
+|1451   |Timothy Drake (New Earth)     |\/wiki\/Timothy_Drake_(New_Earth)     |Secret Identity|Good Characters|Blue Eyes |Black Hair|Male Characters  |   |Living Characters|1095       |1989, August    |1989|
+|71760  |Dinah Laurel Lance (New Earth)|\/wiki\/Dinah_Laurel_Lance_(New_Earth)|Public Identity|Good Characters|Blue Eyes |Blond Hair|Female Characters|   |Living Characters|1075       |1969, November  |1969|
+
+Ao iniciar a aplicação, será rodado o `Job` do `Spring Batch`, responsável por definir um `Reader` para ler os dados do CSV e transformar em um objeto Java do tipo `PersonagemCsvDTO`, um `Processor` para processar e converter o objeto criado anteriormente em um objeto do tipo `Personagem` (uma entidade JPA), e por fim, chamar o `Writer` que irá realizar a operação de `INSERT` dos dados no PostgreSQL. 
+
+O `Job` foi definido com um `chunk` com tamanho 100, ou seja, o processamento será executado de 100 em 100 lotes de processamento.
+
+Ao fim do `Job`, será chamado o `Listener` de finalização, e, neste processo, será realizada a inserção dos dados que estão inseridos no `PostgreSQL` para dentro do `ElasticSearch`, filtrando apenas por dados que estiverem válidos. Por fim, caso existam dados inválidos no `PostgreSQL`, serão removidos.
+
 ## Autores
 
 * **Victor Hugo Negrisoli** - *Desenvolvedor Back-End Sênior* - [vhnegrisoli](https://github.com/vhnegrisoli)
