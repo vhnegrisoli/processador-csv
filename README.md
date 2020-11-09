@@ -114,4 +114,4 @@ http://localhost:8080
 
 ## Licença
 
-Este projeto possui a licença do MIT. Veja mais em: [LICENSE.txt](LICENSE.txt)
+Este projeto possui a licença do MIT. Veja mais em: [LICENSE](LICENSE)
