@@ -1,4 +1,4 @@
-# Projeto: Processado CSV com Spring Batch, ElasticSearch e Kibana
+# Projeto: Processador de CSV com Spring Batch, ElasticSearch e Kibana
 
 ## Resumo
 
