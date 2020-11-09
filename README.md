@@ -35,8 +35,10 @@ O segundo estágio do `Dockerfile` copia o `jar` gerado pelo primeiro estágio a
 a porta `8080` e o executa. Há também no projeto um arquivo `docker-compose.yml`, que, ao ser executado, executa os containers:
 
 ```   
-* es01
-* kib01
+* es01                (ElasticSearch)
+* kib01               (Kibana)
+* processador-csv-api (Aplicação Spring)
+* processador-csv-db  (Banco de dados PostgreSQL 11)
 ```
 
 Processo de execução:
