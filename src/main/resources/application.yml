@@ -5,11 +5,20 @@ spring:
 
   batch:
     initialize-schema: never
+    job:
+      enabled: false
 
   data:
     elasticsearch:
       cluster-nodes: localhost:9200
       cluster-name: docker-cluster
+      properties:
+        index:
+          search:
+            slowlog:
+              threshold:
+                query:
+                  info: 1ms
 
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -36,3 +45,11 @@ oauth2-credentials:
   processador-csv:
     client: processador-csv-client
     secret: processador-csv-secret
+
+logging:
+  level:
+    org:
+      springframework:
+        data:
+          elasticsearch:
+            core: DEBUG

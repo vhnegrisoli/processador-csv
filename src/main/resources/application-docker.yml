@@ -5,11 +5,13 @@ spring:
 
   batch:
     initialize-schema: never
+    job:
+      enabled: false
 
   data:
     elasticsearch:
-      cluster-nodes: ${ELASTICSEARCH_CLUSTER_NODES}:${ELASTICSEARCH_CLUSTER_PORT}
-      cluster-name: ${ELASTICSEARCH_CLUSTER_NAME}
+     cluster-nodes: ${ELASTICSEARCH_CLUSTER_NODES}
+     cluster-name: ${ELASTICSEARCH_CLUSTER_NAME}
 
   datasource:
     driver-class-name: org.postgresql.Driver

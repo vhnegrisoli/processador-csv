@@ -44,27 +44,27 @@ services:
     ports:
       - 5432:5432
 
-  processador-csv-api:
-    build: './'
-    container_name: processador-csv-api
-    ports:
-      - 8080:8080
-    networks:
-      - elastic
-    depends_on:
-      - processador-csv-db
-      - elasticsearch
-      - kibana
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - ELASTICSEARCH_CLUSTER_NODES=elasticsearch
-      - ELASTICSEARCH_CLUSTER_PORT=9200
-      - ELASTICSEARCH_CLUSTER_NAME=docker-cluster
-      - DATABASE_HOST=processador-csv-db
-      - DATABASE_NAME=processador-csv
-      - DATABASE_USER=admin
-      - DATABASE_PORT=5432
-      - DATABASE_PASSWORD=123456
+#  processador-csv-api:
+#    build: './'
+#    container_name: processador-csv-api
+#    ports:
+#      - 8080:8080
+#    networks:
+#      - elastic
+#    depends_on:
+#      - processador-csv-db
+#      - elasticsearch
+#      - kibana
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=docker
+#      - ELASTICSEARCH_CLUSTER_NODES=elasticsearch
+#      - ELASTICSEARCH_CLUSTER_PORT=9200
+#      - ELASTICSEARCH_CLUSTER_NAME=docker-cluster
+#      - DATABASE_HOST=processador-csv-db
+#      - DATABASE_NAME=processador-csv
+#      - DATABASE_USER=admin
+#      - DATABASE_PORT=5432
+#      - DATABASE_PASSWORD=123456
 
 volumes:
   esdata:

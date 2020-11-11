@@ -34,7 +34,7 @@ public class OAuth2ResourceConfig extends ResourceServerConfigurerAdapter {
             "/v2/api-docs**",
             "/webjars/**",
             "/api/docs",
-            "/api/teste/**"
+            "/api/personagem/**"
         };
 
         http
