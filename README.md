@@ -17,7 +17,7 @@ Projeto de uma API de processamento de CSV em batch utilizando Spring Boot com S
 * **PostgreSQL**
 * **REST Api**
 * **Docker**
-* **Docker-compose*
+* **Docker-compose**
 
 ### Pré-requisitos
 
@@ -35,8 +35,8 @@ O segundo estágio do `Dockerfile` copia o `jar` gerado pelo primeiro estágio a
 a porta `8080` e o executa. Há também no projeto um arquivo `docker-compose.yml`, que, ao ser executado, executa os containers:
 
 ```   
-* es01                (ElasticSearch)
-* kib01               (Kibana)
+* elasticsearch       (ElasticSearch)
+* kibana              (Kibana)
 * processador-csv-api (Aplicação Spring)
 * processador-csv-db  (Banco de dados PostgreSQL 11)
 ```
@@ -216,11 +216,32 @@ Exemplo de CSV utilizado:
 |1451   |Timothy Drake (New Earth)     |\/wiki\/Timothy_Drake_(New_Earth)     |Secret Identity|Good Characters|Blue Eyes |Black Hair|Male Characters  |   |Living Characters|1095       |1989, August    |1989|
 |71760  |Dinah Laurel Lance (New Earth)|\/wiki\/Dinah_Laurel_Lance_(New_Earth)|Public Identity|Good Characters|Blue Eyes |Blond Hair|Female Characters|   |Living Characters|1075       |1969, November  |1969|
 
-Ao iniciar a aplicação, será definido um `Job` do `Spring Batch` que irá rodar a cada 1 minuto. O `Job` será responsável por definir um `Reader` para ler os dados do CSV e transformar em um objeto Java do tipo `PersonagemCsvDTO`, um `Processor` para processar e converter o objeto criado anteriormente em um objeto do tipo `Personagem` (uma entidade JPA), e por fim, chamar o `Writer` que irá realizar a operação de `INSERT` dos dados no PostgreSQL. 
+Ao iniciar a aplicação, será definido um `Job` do `Spring Batch` que irá rodar a cada 1 hora. O `Job` será responsável por definir um `Reader` para ler os dados do CSV e transformar em um objeto Java do tipo `PersonagemCsvDTO`, um `Processor` para processar e converter o objeto criado anteriormente em um objeto do tipo `Personagem` (uma entidade JPA), e por fim, chamar o `Writer` que irá realizar a operação de `INSERT` dos dados no PostgreSQL. 
 
 O `Job` foi definido com um `chunk` com tamanho 100, ou seja, o processamento será executado de 100 em 100 lotes de processamento.
 
 Ao fim do `Job`, será chamado o `Listener` de finalização, e, neste processo, será realizada a inserção dos dados que estão inseridos no `PostgreSQL` para dentro do `ElasticSearch`, filtrando apenas por dados que estiverem válidos. Por fim, caso existam dados inválidos no `PostgreSQL`, serão removidos.
+
+#### Iniciar um Job manualmente via endpoint
+
+Na API, há um endpoint que permite iniciar o ``job`` manualmente.
+
+Via endpoint por um testador de API:
+
+Endpoint: ``http://localhost:8080/api/jobs/personagem/iniciar``
+Método: ``POST``
+Headers: ``Authorization: Bearer 6fbbb711-8a84-43e1-9dff-e512d37a0212``
+
+Via cURL:
+
+````
+curl -i -X POST \
+   -H "Authorization:Bearer 6fbbb711-8a84-43e1-9dff-e512d37a0212" \
+   -H "Content-Type:application/json" \
+   -d \
+'' \
+ 'http://localhost:8080/api/jobs/personagem/iniciar'
+````
 
 #### Configurações iniciais do ElasticSearch
 

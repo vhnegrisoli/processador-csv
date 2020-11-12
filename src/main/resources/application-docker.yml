@@ -1,6 +1,15 @@
 server:
   port: 8080
 
+app-config:
+  nome: Processador de CSV
+  descricao: API REST do projeto Processasdor de CSV utilizando Spring Batch, PostgreSQL, ElasticSerach e Docker
+  versao: 1.0.0
+  url: localhost:${server.port}
+  job:
+    scheduler:
+      every-hour: 0 0 */1 * * *
+
 spring:
 
   batch:

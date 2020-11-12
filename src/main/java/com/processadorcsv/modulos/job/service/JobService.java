@@ -1,4 +1,4 @@
-package com.processadorcsv.config.batch;
+package com.processadorcsv.modulos.job.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
