@@ -172,7 +172,7 @@ curl -i -X PUT \
    -d \
     '{
       "index" : { 
-         "max_result_window" : 500000 
+         "max_result_window" : 1000000 
        } 
     }' \
  'http://localhost:9200/personagem/_settings'
@@ -185,9 +185,9 @@ HTTP Status Code: `200`
 Resposta: 
 
 ```
-    {
-      "acknowledged" : true
-    }
+{
+    "acknowledged" : true
+}
 ```
 
 ## Autores
