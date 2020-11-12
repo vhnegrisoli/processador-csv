@@ -126,11 +126,69 @@ Exemplo de CSV utilizado:
 |1451   |Timothy Drake (New Earth)     |\/wiki\/Timothy_Drake_(New_Earth)     |Secret Identity|Good Characters|Blue Eyes |Black Hair|Male Characters  |   |Living Characters|1095       |1989, August    |1989|
 |71760  |Dinah Laurel Lance (New Earth)|\/wiki\/Dinah_Laurel_Lance_(New_Earth)|Public Identity|Good Characters|Blue Eyes |Blond Hair|Female Characters|   |Living Characters|1075       |1969, November  |1969|
 
-Ao iniciar a aplicação, será rodado o `Job` do `Spring Batch`, responsável por definir um `Reader` para ler os dados do CSV e transformar em um objeto Java do tipo `PersonagemCsvDTO`, um `Processor` para processar e converter o objeto criado anteriormente em um objeto do tipo `Personagem` (uma entidade JPA), e por fim, chamar o `Writer` que irá realizar a operação de `INSERT` dos dados no PostgreSQL. 
+Ao iniciar a aplicação, será definido um `Job` do `Spring Batch` que irá rodar a cada 1 minuto. O `Job` será responsável por definir um `Reader` para ler os dados do CSV e transformar em um objeto Java do tipo `PersonagemCsvDTO`, um `Processor` para processar e converter o objeto criado anteriormente em um objeto do tipo `Personagem` (uma entidade JPA), e por fim, chamar o `Writer` que irá realizar a operação de `INSERT` dos dados no PostgreSQL. 
 
 O `Job` foi definido com um `chunk` com tamanho 100, ou seja, o processamento será executado de 100 em 100 lotes de processamento.
 
 Ao fim do `Job`, será chamado o `Listener` de finalização, e, neste processo, será realizada a inserção dos dados que estão inseridos no `PostgreSQL` para dentro do `ElasticSearch`, filtrando apenas por dados que estiverem válidos. Por fim, caso existam dados inválidos no `PostgreSQL`, serão removidos.
+
+#### Configurações iniciais do ElasticSearch
+
+É necessário alterar a quantidade máxima de itens permitidos a serem retornados
+no resultado de uma busca acima de 10.000 itens. Vamos alterar para 1.000.000 itens.
+
+Para isso, caso esteja usando o `Kibana`, execute a consulta:
+
+````
+PUT personagem/_settings
+{
+  "index" : { 
+     "max_result_window" : 1000000 
+   } 
+}
+````
+
+Caso esteja usando uma aplicação para teste de APIs, utilize assim:
+
+Endpoint: `http://localhost:9200/personagem/_settings`
+
+Método: `PUT`
+
+Body: 
+
+```
+{
+  "index" : { 
+     "max_result_window" : 1000000
+   } 
+}
+```
+
+Ou então, via cURL:
+
+```
+curl -i -X PUT \
+   -H "Content-Type:application/json" \
+   -d \
+    '{
+      "index" : { 
+         "max_result_window" : 500000 
+       } 
+    }' \
+ 'http://localhost:9200/personagem/_settings'
+```
+
+A resposta em qualquer caso será:
+
+HTTP Status Code: `200`
+
+Resposta: 
+
+```
+    {
+      "acknowledged" : true
+    }
+```
 
 ## Autores
 
