@@ -1,4 +1,4 @@
-package com.processadorcsv.modulos.processamento.enums;
+package com.processadorcsv.modulos.personagem.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

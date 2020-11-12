@@ -108,6 +108,96 @@ A aplicação estará disponível em:
 http://localhost:8080
 ```
 
+## Autenticação (OAuth2.0)
+
+Para acessar os endpoints, é necessário ter um usuário e realizar um login.
+
+Ao iniciar a aplicação, é criado um usuário padrão:
+
+E-mail: USUARIO@GMAIL.COM
+Senha: 123456
+
+### Endpoint /oauth/token
+
+Para se autenticar, realize o seguinte request:
+
+```
+curl -i -X POST \
+   -H "Content-Type:application/x-www-form-urlencoded" \
+   -d "client_id=processador-csv-client" \
+   -d "client_secret=processador-csv-secret" \
+   -d "username=usuario@gmail.com" \
+   -d "password=123456" \
+   -d "grant_type=password" \
+ 'http://localhost:8080/oauth/token'
+```
+
+Ou então, via algum testador de APIs:
+
+Endpoint: `http://localhost:8080/oauth/token`
+Método: `POST`
+Headers: `Content-Type: application/x-www-form-urlencoded`
+Body (tipo Form): 
+```
+client_id: processador-csv-client
+client_secret: processador-csv-secret
+username: usuario@gmail.com
+password: 123456
+grant_type: password
+```
+
+Caso as credenciais estejam corretas, a resposta será:
+
+```
+{
+    "access_token": "fd03aab5-c701-4266-8786-7849f0cc80fc",
+    "token_type": "bearer",
+    "expires_in": 59999,
+    "scope": "read write trust"
+}
+```
+
+### Como sei que estou logado?
+
+Ao receber seu `access token`, basta bater em qualquer ``endpoint``
+privado, ou seja, que não possua ``public`` em sua URI.
+
+Para que qualquer request com o `access token` seja válido, será
+necessário colocar um `Header`:
+
+`Authorization: Bearer token`
+
+Exemplo de request:
+
+```
+curl -i -X GET \
+   -H "Authorization:Bearer 4687e3af-ba46-4115-b283-ea2d6d05bd53" \
+ 'http://localhost:8080/api/usuarios/autenticado'
+```
+
+Exemplo de resposta: 
+
+```
+{
+    "id": 1,
+    "nome": "USUÁRIO EXEMPLO",
+    "email": "USUARIO@GMAIL.COM",
+    "permissoes": [
+        "ROLE_ADMIN",
+        "ROLE_USER"
+    ]
+}
+```
+
+Caso envie sem o ``Header`` de autorização, a resposta será:
+
+```
+{
+    "error": "unauthorized",
+    "error_description": "Full authentication is required to access this resource"
+}
+```
+
 ## Fluxo de atividade
 
 Dentro do diretório `process`, logo na raiz do projeto, há um arquivo chamado `data.csv`, sendo um CSV sobre a descrição de personagens de quadrinhos da DC e Marvel Comics, contendo exatamente 23.272 linhas de dados, com algumas inválidas, por exemplo, quando o campo YEAR for vazio.
@@ -189,6 +279,10 @@ Resposta:
     "acknowledged" : true
 }
 ```
+
+## Documentação dos endpoints da API com Swagger
+
+A documentação estará disponível em: ``http://localhost:8080/swagger-ui.html``
 
 ## Autores
 

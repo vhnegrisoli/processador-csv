@@ -1,6 +1,7 @@
 package com.processadorcsv.config.auth;
 
 import com.processadorcsv.config.CorsConfigFilter;
+import com.processadorcsv.modulos.usuario.enums.EPermissao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -34,7 +35,8 @@ public class OAuth2ResourceConfig extends ResourceServerConfigurerAdapter {
             "/v2/api-docs**",
             "/webjars/**",
             "/api/docs",
-            "/api/personagem/**"
+            "/api/personagem/**",
+            "/api/usuarios/public"
         };
 
         http
@@ -44,7 +46,11 @@ public class OAuth2ResourceConfig extends ResourceServerConfigurerAdapter {
             .and()
             .authorizeRequests()
             .antMatchers(permitAll).permitAll()
-            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+            .antMatchers( "/api/usuarios/**")
+            .hasAnyRole(EPermissao.ADMIN.name(), EPermissao.USER.name())
+            .antMatchers( "/api/personagens/**")
+            .hasAnyRole(EPermissao.ADMIN.name(), EPermissao.USER.name());
     }
 
     @Override

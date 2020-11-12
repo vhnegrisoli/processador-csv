@@ -5,7 +5,6 @@ import com.processadorcsv.modulos.usuario.model.Usuario;
 import com.processadorcsv.modulos.usuario.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -22,10 +21,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws ValidacaoException {
         return usuarioRepository.findByEmailIgnoreCase(email)
-            .map(usuario -> new User(
-                usuario.getEmail(),
-                usuario.getSenha(),
-                getPermissoes(usuario)) {
+            .map(usuario -> new UserDetailsImpl(
+                usuario, getPermissoes(usuario)) {
             })
             .orElseThrow(() -> new ValidacaoException("Usuário ou senha inválidos."));
     }

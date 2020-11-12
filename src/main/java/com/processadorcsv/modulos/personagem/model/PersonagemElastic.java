@@ -1,7 +1,5 @@
 package com.processadorcsv.modulos.personagem.model;
 
-import com.processadorcsv.modulos.personagem.dto.PersonagemCsvDTO;
-import com.processadorcsv.modulos.processamento.enums.EMesPrimeiraAparicao;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,9 +13,6 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.util.stream.Stream;
-
-import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Data
 @Builder

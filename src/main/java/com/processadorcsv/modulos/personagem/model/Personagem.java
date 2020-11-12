@@ -1,7 +1,7 @@
 package com.processadorcsv.modulos.personagem.model;
 
 import com.processadorcsv.modulos.personagem.dto.PersonagemCsvDTO;
-import com.processadorcsv.modulos.processamento.enums.EMesPrimeiraAparicao;
+import com.processadorcsv.modulos.personagem.enums.EMesPrimeiraAparicao;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

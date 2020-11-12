@@ -24,4 +24,8 @@ public class Permissao {
     @Enumerated(EnumType.STRING)
     @Column(name = "ROLE", nullable = false, unique = true, length = 120)
     private EPermissao role;
+
+    public Permissao(Integer id) {
+        this.id = id;
+    }
 }
