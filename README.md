@@ -284,6 +284,8 @@ Resposta:
 
 A documentação estará disponível em: ``http://localhost:8080/swagger-ui.html``
 
+![Documentação Swagger](https://github.com/vhnegrisoli/processador-csv/blob/main/imagens/Documenta%C3%A7%C3%A3o%20Swagger.png)
+
 ## Autores
 
 * **Victor Hugo Negrisoli** - *Desenvolvedor Back-End Sênior* - [vhnegrisoli](https://github.com/vhnegrisoli)
